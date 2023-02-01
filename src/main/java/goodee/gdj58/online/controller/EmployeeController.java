@@ -101,7 +101,7 @@ import goodee.gdj58.online.vo.Employee;
 	}
 	*/
 	
-	@PostMapping("/empioryee/addEmp")
+	@PostMapping("/employee/addEmp")
 	public String addEmp(HttpSession session, Model model, Employee employee) { //오버로딩 매개변수만 다름 table type과 form type 
 		
 		String idCheck=idService.getIdCheck(employee.getEmpId());
