@@ -24,11 +24,13 @@ public class StudentService {
 		return studentMapper.insertStudent(student);
 	}
 	
-	public List<Student> getStudentList(int currentPage, int rowPerPage) {
+	public List<Student> getStudentList(int currentPage, int rowPerPage, String searchWord, String searchContent) {
 		int beginRow=(currentPage-1)*rowPerPage;
 		Map<String, Object> paramMap=new HashMap<String, Object>();
 		paramMap.put("beginRow", beginRow);
 		paramMap.put("rowPerPage", rowPerPage);
+		paramMap.put("searchWord", searchWord);
+		paramMap.put("searchContent", searchContent);
 		return studentMapper.selectStudentList(paramMap);
 	}
 	
@@ -38,6 +40,13 @@ public class StudentService {
 		paramMap.put("oldPw", oldPw);
 		paramMap.put("newPw", newPw);
 		return studentMapper.updateStudentPw(paramMap);
+	}
+	
+	public int cntStudent(String searchWord, String searchContent) {
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("searchWord", searchWord);
+		paramMap.put("searchContent", searchContent);
+		return studentMapper.cntStudent(paramMap);
 	}
 	
 	public Student loginStudent(Student student) {

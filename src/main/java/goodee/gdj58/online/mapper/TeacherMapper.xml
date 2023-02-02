@@ -45,9 +45,39 @@
 			, teacher_id teacherId
 			, teacher_name teacherName
 		FROM teacher
+		<where>
+			<if test="searchWord != null || searchWord != ''"> <!-- null이거나 ''이면 where태그가 사라짐 -->
+				<choose>
+					<when test='searchContent != null and "sName".equals(searchContent)'>
+						teacher_name like CONCAT('%', #{searchWord}, '%')
+					</when>
+					<when test='searchContent != null and "sId".equals(searchContent)'>
+						teacher_id like CONCAT('%', #{searchWord}, '%')
+					</when>
+				</choose>
+			</if>
+		</where>
 		ORDER BY teacher_no ASC
 		Limit #{beginRow}, #{rowPerPage}
 	</select>
 
-
+	<!-- 페이징을 위한 전체 행 개수 구하기 -->
+	<select id="cntTeacher" 
+			parameterType="java.lang.String"
+			resultType="Integer">
+		SELECT COUNT(*)
+		FROM teacher	
+		<where>
+			<if test="searchWord != null || searchWord != ''"> <!-- null이거나 ''이면 where태그가 사라짐 -->
+				<choose>
+					<when test='searchContent != null and "sName".equals(searchContent)'>
+						teacher_name like CONCAT('%', #{searchWord}, '%')
+					</when>
+					<when test='searchContent != null and "sId".equals(searchContent)'>
+						teacher_id like CONCAT('%', #{searchWord}, '%')
+					</when>
+				</choose>
+			</if>
+		</where>
+	</select>
 </mapper>

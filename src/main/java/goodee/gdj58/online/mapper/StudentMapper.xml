@@ -19,7 +19,7 @@
 		WHERE student_no = #{studentNo} AND student_pw = PASSWORD(#{oldPw}) 
 	</update>
 	
-	<delete id="deleteStudent" parameterType="int">
+	<delete id="deleteStudent" parameterType="Integer">
 		DELETE FROM student
 		WHERE student_no = #{studentNo} <!-- 하나의 값만 들어오면 empNo대신 다른 변수이름 적어도 -->
 	</delete>
@@ -43,10 +43,41 @@
 		SELECT
 			student_no studentNo <!-- rs.getInt("emp_no), new Employee().setEmpNo() -->
 			, student_id studentId
-			, student_name studetnName
+			, student_name studentName
 		FROM student
+		<where>
+		<if test="searchWord != null || searchWord != ''"> <!-- null이거나 ''이면 where태그가 사라짐 -->
+			<choose>
+				<when test='searchContent != null and "sName".equals(searchContent)'>
+					student_name like CONCAT('%', #{searchWord}, '%')
+				</when>
+				<when test='searchContent != null and "sId".equals(searchContent)'>
+					student_id like CONCAT('%', #{searchWord}, '%')
+				</when>
+			</choose>
+		</if>
+		</where>
 		ORDER BY student_no DESC
 		Limit #{beginRow}, #{rowPerPage}
 	</select>
 	
+	<!-- 페이징을 위한 전체 행 개수 구하기 -->
+	<select id="cntStudent" 
+			parameterType="java.lang.String"
+			resultType="Integer">
+		SELECT COUNT(*)
+		FROM student	
+		<where>
+			<if test="searchWord != null || searchWord != ''"> <!-- null이거나 ''이면 where태그가 사라짐 -->
+				<choose>
+					<when test='searchContent != null and "sName".equals(searchContent)'>
+						student_name like CONCAT('%', #{searchWord}, '%')
+					</when>
+					<when test='searchContent != null and "sId".equals(searchContent)'>
+						student_id like CONCAT('%', #{searchWord}, '%')
+					</when>
+				</choose>
+			</if>
+		</where>
+	</select>
 </mapper>

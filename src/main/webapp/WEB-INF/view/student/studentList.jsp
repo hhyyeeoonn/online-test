@@ -7,14 +7,12 @@
 <title></title>
 </head>
 <body>
-	<h5>${loginStudent.studentName}님 안녕하세요</h5>
-
 	<!-- Menu include -->
 	<div>
-		<c:import url="/WEB-INF/view/student/inc/studentMenu.jsp"> </c:import>
+		<c:import url="/WEB-INF/view/employee/inc/empMenu.jsp"> </c:import>
 	</div>
 	<h1>Student List</h1>
-	<a href="${pageContext.request.contextPath}/student/addStudent">학생등록</a>
+	<a href="${pageContext.request.contextPath}/employee/student/addStudent">학생등록</a>
 	<table border="1">
 		<tr>
 			<th>Id</th>
@@ -25,14 +23,32 @@
 			<tr>
 				<td>${e.studentId}</td>
 				<td>${e.studentName}</td>
-				<td><a href="${pageContext.request.contextPath}/student/removeStudent?studentNo=${e.studentNo}">학생삭제</a></td>
+				<td><a href="${pageContext.request.contextPath}/employee/student/removeStudent?studentNo=${e.studentNo}">학생삭제</a></td>
 			</tr>
 		</c:forEach>
 	</table>
+	
+	<form action="${pageContext.request.contextPath}/employee/student/studentList"> <!-- 검색어는 웬만하면 get방식으로 -->
+		<input type="text" name="searchWord" value="${searchWord}">
+		<select name="searchContent">
+			<option></option>
+			<option value="sName">이름</option>
+			<option value="sId">ID</option>
+		</select>
+		<button type="submit">검색</button>
+	</form>
 	<div>
-		<a href="${pageContext.request.contextPath}/student/studentList?currentPage=${currentPage-1}">이전</a>
-		<a href="${pageContext.request.contextPath}/student/studentList?currentPage=${currentPage+1}">다음</a>
+		<c:if test="${currentPage} > 2">
+			<a href="${pageContext.request.contextPath}/employee/student/studentList?startPage=${startPage}&seartchWord=${searchWord}&searchContent=${searchContent}">처음으로</a>
+			<a href="${pageContext.request.contextPath}/employee/student/studentList?currentPage=${currentPage-1}&searchWord=${searchWord}&searchContent=${searchContent}">이전</a>
+		</c:if>
+		<c:forEach var="i" begin="${startPage}" end="${endPage}" step="1">
+			<a href="${pageContext.request.contextPath}/employee/student/studentList?currentPage=${i}&searchWord=${searchWord}&searchContent=${searchContent}">${i}</a>	
+		</c:forEach>
+		<c:if test="${currentPage} < ${endPage}">
+			<a href="${pageContext.request.contextPath}/employee/student/studentList?currentPage=${currentPage+1}&searchWord=${searchWord}&searchContent=${searchContent}">다음</a>
+			<a href="${pageContext.request.contextPath}/employee/student/studentList?endPage=${endPage}&searchWord=${searchWord}&searchContent=${searchContent}">끝으로</a>
+		</c:if>
 	</div>
-
 </body>
 </html>

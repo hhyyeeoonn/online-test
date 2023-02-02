@@ -25,7 +25,7 @@
 	</delete>
 	
 	<insert id="insertEmployee" parameterType="goodee.gdj58.online.vo.Employee"> <!-- 자동으로 integer 타입으로 반환 -->
-		INSERT INTO employee {
+		INSERT INTO employee (
 			emp_id
 			, emp_pw
 			, emp_name
@@ -45,7 +45,39 @@
 			, emp_id empId
 			, emp_name empName
 		FROM employee
+		<where>
+			<if test="searchWord != null || searchWord != ''"> <!-- null이거나 ''이면 where태그가 사라짐 -->
+				<choose>
+					<when test='searchContent != null and "sName".equals(searchContent)'>
+						emp_name like CONCAT('%', #{searchWord}, '%')
+					</when>
+					<when test='searchContent != null and "sId".equals(searchContent)'>
+						emp_id like CONCAT('%', #{searchWord}, '%')
+					</when>
+				</choose>
+			</if>
+		</where>
 		ORDER BY emp_no DESC
 		Limit #{beginRow}, #{rowPerPage}
+	</select>
+	
+	<!-- 페이징을 위한 전체 행 개수 구하기 -->
+	<select id="cntEmployee" 
+			parameterType="java.lang.String"
+			resultType="Integer">
+		SELECT COUNT(*)
+		FROM employee	
+		<where>
+			<if test="searchWord != null || searchWord != ''"> <!-- null이거나 ''이면 where태그가 사라짐 -->
+				<choose>
+					<when test='searchContent != null and "sName".equals(searchContent)'>
+						emp_name like CONCAT('%', #{searchWord}, '%')
+					</when>
+					<when test='searchContent != null and "sId".equals(searchContent)'>
+						emp_id like CONCAT('%', #{searchWord}, '%')
+					</when>
+				</choose>
+			</if>
+		</where>
 	</select>
 </mapper> 

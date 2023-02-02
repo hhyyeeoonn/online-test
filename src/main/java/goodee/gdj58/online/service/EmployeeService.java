@@ -36,16 +36,23 @@ public class EmployeeService {
 	}
 	
 	public int addEmployee(Employee employee) {
-		
 		return employeeMapper.insertEmployee(employee);
 	}
 	
-	public List<Employee> getEmployeeList(int currentPage, int rowPerPage) {
+	public List<Employee> getEmployeeList(int currentPage, int rowPerPage, String searchWord, String searchContent) {
 		int beginRow = (currentPage -1) * rowPerPage;
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("beginRow", beginRow);
 		paramMap.put("rowPerPage", rowPerPage);
-		
+		paramMap.put("searchWord", searchWord);
+		paramMap.put("searchContent", searchContent);
 		return employeeMapper.selectEmployeeList(paramMap);
+	}
+	
+	public int cntEmployee(String searchWord, String searchContent) {
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("searchWord", searchWord);
+		paramMap.put("searchContent", searchContent);
+		return employeeMapper.cntEmployee(paramMap);
 	}
 }

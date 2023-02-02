@@ -17,4 +17,5 @@ public interface TeacherMapper {
 	int deleteTeacher(int teacherNo); // 삭제
 	int insertTeacher(Teacher teacher);
 	List<Teacher> selectTeacherList(Map<String, Object> paramMap);
+	int cntTeacher(Map<String, Object> paramMap);
 }

@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import goodee.gdj58.online.vo.Employee;
 import goodee.gdj58.online.vo.Student;
 
 @Mapper
@@ -17,4 +16,5 @@ public interface StudentMapper {
 	int deleteStudent(int StudentNo); // 삭제
 	int insertStudent(Student student);
 	List<Student> selectStudentList(Map<String, Object> paramMap);
+	int cntStudent(Map<String, Object> paramMap);
 }

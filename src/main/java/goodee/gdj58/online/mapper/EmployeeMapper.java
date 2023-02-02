@@ -17,6 +17,7 @@ public interface EmployeeMapper {
 	int insertEmployee(Employee employee);
 	
 	List<Employee> selectEmployeeList(Map<String, Object> paramMap);
+	int cntEmployee(Map<String, Object> paramMap); // employee table 전체 행 개수
 }
 
 /*

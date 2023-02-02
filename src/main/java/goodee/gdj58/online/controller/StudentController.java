@@ -14,29 +14,23 @@ import org.springframework.web.bind.annotation.RequestParam;
 import goodee.gdj58.online.service.IdService;
 import goodee.gdj58.online.service.StudentService;
 import goodee.gdj58.online.vo.Student;
-import goodee.gdj58.online.vo.Teacher;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Controller
 public class StudentController {
 	@Autowired StudentService studentService;
 	@Autowired IdService idService;
 	// 로그인
-	@GetMapping("/student/loginStudent")
-	public String loginStudent(HttpSession session) {
-		Student loginStudent=(Student)session.getAttribute("loginStudent");
-		if(loginStudent != null) {
-			return "student/studentHome";
-		}
+	@GetMapping("/loginStudent")
+	public String loginStudent() {
 		return "student/loginStudent";
 	}
-	@PostMapping("/student/loginStudent")
+	@PostMapping("/loginStudent")
 	public String loginStudent(HttpSession session, Student student) {
 		Student resultStudent=studentService.loginStudent(student);
-		if(resultStudent == null) {
-			return "redirect:/student/loginStudent";
-		}
 		session.setAttribute("loginStudent", resultStudent);
-		return "student/studentList";
+		return "redirect:/student/studentHome";
 	}
 	
 	// 로그아웃
@@ -48,12 +42,8 @@ public class StudentController {
 	
 	// 비밀번호변경
 	@GetMapping("/student/modifyStudentPw")
-	public String modifyStudentPw(HttpSession session) {
-		Student loginStudent=(Student)session.getAttribute("loginStudent");
-		if(loginStudent == null) {
-			return "redirect:/student/loginStudent";
-		}
-		return "/student/modifyStudentPw";
+	public String modifyStudentPw() {
+		return "student/modifyStudentPw";
 	}
 	@PostMapping("/student/modifyStudentPw") 
 	public String modifyStudentPw(HttpSession session
@@ -68,23 +58,56 @@ public class StudentController {
 	}
 	
 	// 리스트
-	@GetMapping("/student/studetnList")
+	@GetMapping("/employee/student/studentList")
 	public String studentList(Model model
 									, @RequestParam(value="currentPage", defaultValue="1") int currentPage
-									, @RequestParam(value="rowPerPage", defaultValue="10") int rowPerPage) {
-		List<Student> list=studentService.getStudentList(currentPage, rowPerPage);
+									, @RequestParam(value="rowPerPage", defaultValue="10") int rowPerPage
+									, @RequestParam(value="searchWord", defaultValue="") String searchWord
+									, @RequestParam (value="searchContent", defaultValue="") String searchContent) {
+		log.debug("\u001B[31m"+"searchWord: "+searchWord+"\u001B[31m");
+		log.debug("\u001B[31m"+"currentPage: "+currentPage);
+		log.debug("\u001B[31m"+"rowPerPage: "+rowPerPage);
+		log.debug("\u001B[31m"+"searchContent: "+searchContent);
+		
+		List<Student> list=studentService.getStudentList(currentPage, rowPerPage, searchWord, searchContent);
+		
+		// 페이징
+		int cntStudent = studentService.cntStudent(searchWord, searchContent);
+		log.debug("\u001B[31m"+"cntStudent: "+cntStudent);
+	
+		int lastPage=(int)Math.ceil((double) cntStudent / (double)rowPerPage);
+		
+		if(currentPage < 1) {
+			currentPage = 1;
+		} else if(currentPage > lastPage) {
+			currentPage = lastPage;
+		}
+		int startPage = (currentPage-1)/10*10+1;
+		int endPage = startPage + 9;
+		if(startPage<1) {
+			startPage = 1;
+		} 
+		if(endPage > lastPage) {
+			endPage = lastPage;
+		}
+		
 		model.addAttribute("list", list);
 		model.addAttribute("currentPage", currentPage);
+		model.addAttribute("lastPage", lastPage);
+		model.addAttribute("searchWord", searchWord);
+		model.addAttribute("searchContent", searchContent);
+		model.addAttribute("startPage", startPage);
+		model.addAttribute("endPage", endPage);
 		return "student/studentList";
 	}
 	
 	// 추가
-	@GetMapping("/student/addStudent")
+	@GetMapping("/employee/student/addStudent")
 	public String addStudent() {
 		return "student/addStudent";
 	}
-	@PostMapping("/studetn/addStudent")
-	public String addStudent(HttpSession session, Model model, Student student) {
+	@PostMapping("/employee/student/addStudent")
+	public String addStudent(Model model, Student student) {
 		String idCheck=idService.getIdCheck(student.getStudentId());
 		if(idCheck != null) {
 			model.addAttribute("errorMsg", "중복된 ID");
@@ -95,18 +118,13 @@ public class StudentController {
 			model.addAttribute("errorMsg", "등록실패");
 			return "student/addStudent";
 		}
-		return "redirect:/student/studentList";
+		return "redirect:/employee/student/studentList";
 	}
 	
 	// 삭제 
-	@GetMapping("/student/removeStudent")
-	public String removeStudent(HttpSession session, @RequestParam("studentNo") int studentNo) {
-		Student loginStudent=(Student)session.getAttribute("loginStudent");
-		if(loginStudent != null) {
-			return "redirect:/student/studentList";
-		}
-		
+	@GetMapping("/employee/student/removeStudent")
+	public String removeStudent(@RequestParam("studentNo") int studentNo) {
 		studentService.removeStudent(studentNo);
-		return "redirect:/student/studentList"; // 리스트로 리다이렉트
+		return "redirect:/employee/student/studentList"; // 리스트로 리다이렉트
 	}
 }
