@@ -35,7 +35,6 @@ public class EmpLoginFilter implements Filter {
 			log.debug("웹브라우저 요청만 허용합니다"); //@Slf4j 때문에 log를 사용할 수 있음
 			return;
 		}
-			
 		// controller 전
 		chain.doFilter(request, response); // 원래요청 session안에 loginEmp가 있을 경우에만 여기까지 온다
 		// controller 후

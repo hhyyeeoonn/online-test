@@ -8,7 +8,7 @@
 </head>
 <body>
 	<h1>학생 로그인</h1>
-	<form method="post" action="${pageContext.request.contextPath}/student/loginStudent">
+	<form method="post" action="${pageContext.request.contextPath}/loginStudent">
 		<table>
 			<tr>
 				<td>ID</td>

@@ -38,8 +38,11 @@
 		</select>
 		<button type="submit">검색</button>
 	</form>
+	<!-- 페이징 -->
 	<div>
-		<a href="${pageContext.request.contextPath}/employee/empList?currentPage=1&searchWord=${searchWord}&searchContent=${searchContent}">처음으로</a>
+		<c:if test="${currentPage >1}">
+			<a href="${pageContext.request.contextPath}/employee/empList?currentPage=1&searchWord=${searchWord}&searchContent=${searchContent}">처음으로</a>
+		</c:if>
 		<c:if test="${currentPage > 10}">
 			<a href="${pageContext.request.contextPath}/employee/empList?currentPage=${startPage-1}&searchWord=${searchWord}&searchContent=${searchContent}">이전</a>
 		</c:if>
@@ -49,7 +52,9 @@
 		<c:if test="${currentPage < endPage+1 && currentPage != lastPage}">
 			<a href="${pageContext.request.contextPath}/employee/empList?currentPage=${endPage+1}&searchWord=${searchWord}&searchContent=${searchContent}">다음</a>
 		</c:if>	
-		<a href="${pageContext.request.contextPath}/employee/empList?currentPage=${lastPage}&searchWord=${searchWord}&searchContent=${searchContent}">끝으로</a>
+		<c:if test="${currentPage != lastPage}">
+			<a href="${pageContext.request.contextPath}/employee/empList?currentPage=${lastPage}&searchWord=${searchWord}&searchContent=${searchContent}">끝으로</a>
+		</c:if>
 	</div>
 </body>
 </html>

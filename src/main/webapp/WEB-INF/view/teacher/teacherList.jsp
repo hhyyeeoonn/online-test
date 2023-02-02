@@ -39,7 +39,9 @@
 	</form>
 	<!-- 페이징 -->
 	<div>
-		<a href="${pageContext.request.contextPath}/employee/teacher/teacherList?currentPage=1&searchWord=${searchWord}&searchContent=${searchContent}">처음으로</a>
+		<c:if test="${currentPage >1}">
+			<a href="${pageContext.request.contextPath}/employee/teacher/teacherList?currentPage=1&searchWord=${searchWord}&searchContent=${searchContent}">처음으로</a>
+		</c:if>
 		<c:if test="${currentPage > 10}">
 			<a href="${pageContext.request.contextPath}/employee/teacher/teacherList?currentPage=${startPage-1}&searchWord=${searchWord}&searchContent=${searchContent}">이전</a>
 		</c:if>
@@ -48,8 +50,10 @@
 		</c:forEach>
 		<c:if test="${currentPage < endPage+1 && currentPage != lastPage}">
 			<a href="${pageContext.request.contextPath}/employee/teacher/teacherList?currentPage=${endPage+1}&searchWord=${searchWord}&searchContent=${searchContent}">다음</a>
-		</c:if>	
-		<a href="${pageContext.request.contextPath}/employee/teacher/teacherList?currentPage=${lastPage}&searchWord=${searchWord}&searchContent=${searchContent}">끝으로</a>
+		</c:if>
+		<c:if test="${currentPage != lastPage}">
+			<a href="${pageContext.request.contextPath}/employee/teacher/teacherList?currentPage=${lastPage}&searchWord=${searchWord}&searchContent=${searchContent}">끝으로</a>
+		</c:if>
 	</div>
 </body>
 </html>

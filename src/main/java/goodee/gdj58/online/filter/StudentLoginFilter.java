@@ -33,7 +33,6 @@ public class StudentLoginFilter implements Filter {
 			log.debug("웹브라우저 요청만 허용합니다");
 			return;
 		}
-		
 		// controller 전
 		chain.doFilter(request, response);
 		// controller 후

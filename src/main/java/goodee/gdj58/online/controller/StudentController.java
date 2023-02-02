@@ -21,16 +21,17 @@ import lombok.extern.slf4j.Slf4j;
 public class StudentController {
 	@Autowired StudentService studentService;
 	@Autowired IdService idService;
-	// 로그인
+	// 로그인 폼
 	@GetMapping("/loginStudent")
 	public String loginStudent() {
 		return "student/loginStudent";
 	}
+	// 로그인 액션
 	@PostMapping("/loginStudent")
 	public String loginStudent(HttpSession session, Student student) {
 		Student resultStudent=studentService.loginStudent(student);
 		session.setAttribute("loginStudent", resultStudent);
-		return "redirect:/student/studentHome";
+		return "student/studentHome";
 	}
 	
 	// 로그아웃

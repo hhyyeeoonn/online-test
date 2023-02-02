@@ -37,17 +37,22 @@
 		</select>
 		<button type="submit">검색</button>
 	</form>
+	<!-- 페이징 -->
 	<div>
-		<c:if test="${currentPage} > 2">
-			<a href="${pageContext.request.contextPath}/employee/student/studentList?startPage=${startPage}&seartchWord=${searchWord}&searchContent=${searchContent}">처음으로</a>
-			<a href="${pageContext.request.contextPath}/employee/student/studentList?currentPage=${currentPage-1}&searchWord=${searchWord}&searchContent=${searchContent}">이전</a>
+		<c:if test="${currentPage >1}">
+			<a href="${pageContext.request.contextPath}/employee/student/studentList?currentPage=1&searchWord=${searchWord}&searchContent=${searchContent}">처음으로</a>
+		</c:if>
+		<c:if test="${currentPage > 10}">
+			<a href="${pageContext.request.contextPath}/employee/student/studentList?currentPage=${startPage-1}&searchWord=${searchWord}&searchContent=${searchContent}">이전</a>
 		</c:if>
 		<c:forEach var="i" begin="${startPage}" end="${endPage}" step="1">
-			<a href="${pageContext.request.contextPath}/employee/student/studentList?currentPage=${i}&searchWord=${searchWord}&searchContent=${searchContent}">${i}</a>	
+			<a href="${pageContext.request.contextPath}/employee/student/studentList?currentPage=${i}&searchWord=${searchWord}&searchContent=${searchContent}">${i}</a>
 		</c:forEach>
-		<c:if test="${currentPage} < ${endPage}">
-			<a href="${pageContext.request.contextPath}/employee/student/studentList?currentPage=${currentPage+1}&searchWord=${searchWord}&searchContent=${searchContent}">다음</a>
-			<a href="${pageContext.request.contextPath}/employee/student/studentList?endPage=${endPage}&searchWord=${searchWord}&searchContent=${searchContent}">끝으로</a>
+		<c:if test="${currentPage < endPage+1 && currentPage != lastPage}">
+			<a href="${pageContext.request.contextPath}/employee/student/studentList?currentPage=${endPage+1}&searchWord=${searchWord}&searchContent=${searchContent}">다음</a>
+		</c:if>	
+		<c:if test="${currentPage != lastPage}">
+			<a href="${pageContext.request.contextPath}/employee/student/studentList?currentPage=${lastPage}&searchWord=${searchWord}&searchContent=${searchContent}">끝으로</a>
 		</c:if>
 	</div>
 </body>

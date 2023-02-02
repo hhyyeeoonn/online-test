@@ -35,6 +35,7 @@ public class TeacherController {
 		if(resultTeacher == null) {
 			return "redirect:/teacher/loginTeacher";
 		}
+		log.debug("resultTeacher: "+resultTeacher);
 		session.setAttribute("loginTeacher", resultTeacher);
 		return "teacher/teacherHome";
 	}
