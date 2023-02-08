@@ -28,6 +28,7 @@
 			<button type="submit">시험등록</button>
 		</form>
 	</div>
+	<div>${now}</div>
 	<br>
 	<div>시험 목록</div>
 	<div>

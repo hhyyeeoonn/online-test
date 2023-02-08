@@ -1,5 +1,6 @@
 package goodee.gdj58.online.controller;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,6 +69,10 @@ public class TestController {
 			log.debug("\u001B[31m"+"TeacherController: 등록한 문제 있음");
 			model.addAttribute("resultMap", resultMap);
 		}
+		
+		LocalDate now =LocalDate.now();
+		model.addAttribute("now", now);
+		log.debug("\u001B[31m"+"now: "+now);
 		
 		return "test/testListOne";
 	}
