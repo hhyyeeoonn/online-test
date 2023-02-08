@@ -7,11 +7,6 @@
 <title></title>
 </head>
 <body>
-	<h5>${loginTeacher.teacherName}님 안녕하세요</h5>
 
-	<!-- Menu include -->
-	<div>
-		<c:import url="/WEB-INF/view/teacher/inc/teacherMenu.jsp"> </c:import>
-	</div>
 </body>
 </html>

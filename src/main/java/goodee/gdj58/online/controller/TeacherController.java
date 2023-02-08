@@ -1,6 +1,8 @@
 package goodee.gdj58.online.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import goodee.gdj58.online.service.IdService;
 import goodee.gdj58.online.service.TeacherService;
 import goodee.gdj58.online.vo.Teacher;
+import goodee.gdj58.online.vo.Test;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -21,6 +24,12 @@ import lombok.extern.slf4j.Slf4j;
 public class TeacherController {
 	@Autowired TeacherService teacherService;
 	@Autowired IdService idService;
+	
+	// 강사페이지
+	@GetMapping("/teacher/teacherHome")
+	public String teacherHome() {
+		return "teacher/teacherHome";
+	}
 	
 	// 로그인 form
 	@GetMapping("/loginTeacher")
@@ -37,7 +46,7 @@ public class TeacherController {
 		}
 		log.debug("resultTeacher: "+resultTeacher);
 		session.setAttribute("loginTeacher", resultTeacher);
-		return "teacher/teacherHome";
+		return "redirect:/teacher/teacherHome";
 	}
 	
 	// 로그아웃
@@ -60,9 +69,13 @@ public class TeacherController {
 		if(loginTeacher == null) {
 			return "redirect:/teacher/loginTeacher";
 		}
-		teacherService.updateTeacherPw(loginTeacher.getTeacherNo(), oldPw, newPw);
+		teacherService.modifyTeacherPw(loginTeacher.getTeacherNo(), oldPw, newPw);
 		return "redirect:/teacher/teacherHome";
 	}
+	
+	
+	
+	/* ---------------관리자 권한-------------------- */
 	
 	// 리스트
 	@GetMapping("/employee/teacher/teacherList")

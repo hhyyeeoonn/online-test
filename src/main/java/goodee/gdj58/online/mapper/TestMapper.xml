@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="goodee.gdj58.online.mapper.TestMapper">
+	
+	<!-- 시험회차 등록 -->
+	<insert id="insertTest"
+			parameterType="goodee.gdj58.online.vo.Test">
+		INSERT INTO test (
+			test_title
+			, test_date
+			, test_state
+		) VALUES (
+			#{testTitle}
+			, #{testDate}
+			, '작성중'
+		)
+	</insert>
+	
+	<!-- 시험일 하나 선택 -->
+	<select id="selectTestListOne"
+			parameterType="Integer"
+			resultType="java.util.Map">
+		SELECT 
+			t.test_title testTitle
+			, t.test_date testDate
+			, q.question_no questionNo <!-- 인조키 -->
+			, q.question_idx questionIdx <!-- 답안 선택 사지선다 -->
+			, q.question_title questionTitle <!-- 문제 -->
+			, e.example_no exampleNo
+			, e.example_idx exampleIdx
+			, e.example_title exampleTitle
+			, e.example_ox exampleOx
+		From test t
+		INNER JOIN question q
+		ON t.test_no = q.test_no
+		INNER JOIN example e
+		ON q.question_no = e.question_no
+		WHERE t.test_no = #{testNo}
+	</select>
+	
+	<!-- 시험회차 목록 조회 -->
+	<select id="selectTestList" 
+			parameterType="java.lang.String"
+			resultType="goodee.gdj58.online.vo.Test">
+		SELECT 
+			test_no testNo
+			, test_title testTitle 
+			, test_date testDate
+			, test_state testState
+		FROM test
+		<where>
+			<if test="testDate != null || testDate != ''">
+				test_date like CONCAT('%', #{testDate}, '%')
+			</if>
+		</where>
+		ORDER BY test_no DESC;
+	</select>
+</mapper>
