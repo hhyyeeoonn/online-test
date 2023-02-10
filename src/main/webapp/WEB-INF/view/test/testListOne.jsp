@@ -7,6 +7,11 @@
 <title></title>
 </head>
 <body>
+	<!-- Menu include -->
+	<div>
+		<c:import url="/WEB-INF/view/test/inc/testMenu.jsp"> </c:import>
+	</div>
+
 	<c:if test="${msg != null}">
 		<div>${msg}</div>	
 	</c:if>
