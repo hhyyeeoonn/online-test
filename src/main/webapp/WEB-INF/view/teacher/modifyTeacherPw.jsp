@@ -7,6 +7,11 @@
 <title></title>
 </head>
 <body>
+	<!-- Menu include -->
+	<div>
+		<c:import url="/WEB-INF/view/employee/inc/empMenu.jsp"> </c:import>
+	</div>
+	
 	<h5>${loginTeacher.teacherName}님 비밀번호 변경</h5>
 	<form method="post" action="${pageContext.request.contextPath}/teacher/modifyTeacherPw">
 		<table>

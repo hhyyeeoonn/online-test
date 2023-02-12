@@ -1,9 +1,8 @@
 package goodee.gdj58.online.controller;
 
 import java.time.LocalDate;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,8 +11,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import goodee.gdj58.online.service.ExampleService;
 import goodee.gdj58.online.service.IdService;
+import goodee.gdj58.online.service.QuestionService;
 import goodee.gdj58.online.service.TestService;
+import goodee.gdj58.online.vo.Example;
+import goodee.gdj58.online.vo.Question;
 import goodee.gdj58.online.vo.Test;
 import lombok.extern.slf4j.Slf4j;
 
@@ -21,6 +24,8 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 public class TestController {
 	@Autowired TestService testService;
+	@Autowired QuestionService questionService;
+	@Autowired ExampleService exampleService;
 	@Autowired IdService idService;
 	
 	// 새로운 시험 추가
@@ -45,9 +50,11 @@ public class TestController {
 			String msg="시험 등록 실패";
 			model.addAttribute("msg", msg);
 			return "test/testList";
+		} else {
+			int testNo = testService.getTestNo(test);
+			log.debug("\u001B[31m"+"TeacherController: 시험등록완료");
+			return "redirect:/teacher/test/testListOne?testNo="+testNo;
 		}
-		log.debug("\u001B[31m"+"TeacherController: 시험등록완료");
-		return "redirect:/teacher/test/getTestList";
 	}
 	
 	// 시험 한 회차 조회
@@ -59,26 +66,37 @@ public class TestController {
 			return "redirect:/teacher/getTeacherList";
 		}
 		
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		resultMap = testService.getTestListOne(testNo);
-		if(resultMap == null) {
+		List<Question> getQuestionList = new ArrayList<>();
+		List<Example> getExampleList = new ArrayList<>();
+		getQuestionList = questionService.getQuestionList(testNo);
+		if(getQuestionList == null) {
 			String msg = "등록한 문제 없음";
 			log.debug("\u001B[31m"+"TeacherController: 등록한 문제 없음");
 			model.addAttribute("msg", msg);
 		} else {
 			log.debug("\u001B[31m"+"TeacherController: 등록한 문제 있음");
-			model.addAttribute("resultMap", resultMap);
+			model.addAttribute("questionList", getQuestionList);
+			for(Question q : getQuestionList) { // 문제번호 구해서 답안지 출력하기
+				int questionNo = q.getQuestionNo();
+				log.debug("\u001B[31m"+"TeacherController: "+questionNo);
+				Question question = new Question();
+				question.setQuestionNo(questionNo);
+				question.setTestNo(testNo);
+				getExampleList = exampleService.getExampleList(question);
+				log.debug("\u001B[31m"+"TeacherController: "+getExampleList);
+				model.addAttribute("exampleList", getExampleList);
+			}
 		}
 		
 		LocalDate now =LocalDate.now();
 		model.addAttribute("now", now);
+		model.addAttribute("testNo", testNo);
 		log.debug("\u001B[31m"+"now: "+now);
-		
 		return "test/testListOne";
 	}
 	
 	// 시험회차 목록 조회
-	@GetMapping("/teacher/test/getTestList")
+	@GetMapping("/teacher/test/testList")
 	public String getTestList(Model model
 							, @RequestParam(value="testDate", defaultValue="") String testDate) {
 		

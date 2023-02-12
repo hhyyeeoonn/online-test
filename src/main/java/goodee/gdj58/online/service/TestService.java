@@ -14,6 +14,10 @@ import goodee.gdj58.online.vo.Test;
 @Transactional
 public class TestService {
 	@Autowired private TestMapper testMapper;
+	// 시험회차 조회
+	public int getTestNo(Test test) {
+		return testMapper.selectTestNo(test);
+	}
 	
 	// 시험회차 등록
 	public int addTest(Test test) {

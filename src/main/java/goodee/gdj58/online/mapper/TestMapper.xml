@@ -2,6 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="goodee.gdj58.online.mapper.TestMapper">
 	
+	<!-- 시험회차 조회 -->
+	<select id="selectTestNo"
+			parameterType="goodee.gdj58.online.vo.Test"
+			resultType="Integer">
+		SELECT test_no testNo
+		FROM test
+		WHERE test_title = #{testTitle} AND test_date = #{testDate}	
+	</select>
+	
 	<!-- 시험회차 등록 -->
 	<insert id="insertTest"
 			parameterType="goodee.gdj58.online.vo.Test">
@@ -24,7 +33,7 @@
 			t.test_title testTitle
 			, t.test_date testDate
 			, q.question_no questionNo <!-- 인조키 -->
-			, q.question_idx questionIdx <!-- 답안 선택 사지선다 -->
+			, q.question_idx questionIdx <!-- 문제번호 -->
 			, q.question_title questionTitle <!-- 문제 -->
 			, e.example_no exampleNo
 			, e.example_idx exampleIdx
