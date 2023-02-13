@@ -45,6 +45,7 @@
 	
 	<div>
 		<c:forEach var="q" items="${questionList}" varStatus="status">
+			<input type="hidden" value="${q.questionNo}">
 			<table>
 				<tr>
 					<td colspan = "3">${q.questionIdx} 번</td>
@@ -55,16 +56,18 @@
 					</td>
 				</tr>
 				<c:forEach var = "e" items = "${exampleList}"> <!-- questionNo가 같은 것만출력되게 하기 -->
-					<tr>
-						<td><span class="oxMsg"></span></td>
-						<td>
-							<input type="hidden" class="ox" value="${e.exampleOx}">
-							<span>${e[status.index].exampleIdx}</span>
-						</td>
-						<td>
-							<span>${e.exampleTitle}</span>
-						</td>
-					</tr>
+					<c:if test="${e.questionNo eq q.questionNo}">
+						<tr>
+							<td><span class="oxMsg"></span></td>
+							<td>
+								<input type="hidden" class="ox" value="${e.exampleOx}">
+								<span>${e.exampleIdx}번</span>
+							</td>
+							<td>
+								<span>${e.exampleTitle}</span>
+							</td>
+						</tr>
+					</c:if>
 				</c:forEach>
 			</table>
 		</c:forEach>
