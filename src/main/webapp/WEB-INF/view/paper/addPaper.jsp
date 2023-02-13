@@ -13,12 +13,12 @@
 		$(document).ready(function() {
 			$('.pOx').each(function() {
 				let oxLength=$('.pOx:checked').length;
-				console.log($('.pOx:checked').length);
 				$(this).click(function() {
+					console.log($('.pOx:checked').length);
 					if(oxLength == 1) {
 						$('.pOx').prop('checked', false);
 					}
-				})
+				});
 			});
 		});
 	</script>
@@ -50,7 +50,7 @@
 								<tr>
 									<td></td>
 									<td>
-										<input type="radio" class="pOx" value="${status.index+1}">
+										<input type="radio" class="ox" value="${status.index+1}">
 										<span>${e.exampleIdx}번</span>
 									</td>
 									<td>

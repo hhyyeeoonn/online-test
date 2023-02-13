@@ -88,8 +88,9 @@ public class TestController {
 		} else {
 			log.debug("\u001B[31m"+"TestController: 등록한 문제 있음");
 			model.addAttribute("questionList", getQuestionList);
-			for(Question q : getQuestionList) { // 문제번호 구해서 답안지 출력하기
-				int questionNo = q.getQuestionNo();
+			// 문제번호 구해서 답안지 출력하기
+			for(Question q : getQuestionList) {
+				int questionNo = q.getQuestionNo(); // 문제번호
 				Question question = new Question();
 				question.setQuestionNo(questionNo);
 				question.setTestNo(testNo);

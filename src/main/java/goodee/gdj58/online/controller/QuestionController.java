@@ -61,7 +61,7 @@ public class QuestionController {
 				example.setExampleIdx(exampleIdx[i]);
 				example.setExampleTitle(exampleTitle[i]);
 				log.debug("\u001B[31m"+"QuestionController: " + exampleTitle[i]);
-				if(i + 1 == eOx) {
+				if(i + 1 == eOx) { // eOx에는 선택지번호가 저장되어있고 정답으로 체크한 단 하나의 eOx가 넘어온다
 					example.setExampleOx("정답");
 					log.debug("\u001B[31m"+"QuestionController: 정답"+eOx);
 				} else {
