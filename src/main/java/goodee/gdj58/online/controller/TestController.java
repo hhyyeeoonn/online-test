@@ -28,6 +28,17 @@ public class TestController {
 	@Autowired ExampleService exampleService;
 	@Autowired IdService idService;
 	
+	@GetMapping("/student/test/testListStudent")
+	public String getTestListStudent(Model model
+							, @RequestParam(value="testDate", defaultValue="") String testDate) {
+		
+		List<Test> testList=testService.getTestList(testDate);
+		
+		model.addAttribute("testList", testList);
+		//log.debug("testList: "+testList);
+		return "test/testListStudent";
+	}
+	
 	// 새로운 시험 추가
 	@PostMapping("/teacher/test/addTest")
 	public String addTest(Model model

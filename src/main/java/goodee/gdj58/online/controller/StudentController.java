@@ -30,7 +30,12 @@ public class StudentController {
 	@PostMapping("/loginStudent")
 	public String loginStudent(HttpSession session, Student student) {
 		Student resultStudent=studentService.loginStudent(student);
+		if(resultStudent == null) {
+			return "redirect:/loginStudent";
+		}
 		session.setAttribute("loginStudent", resultStudent);
+		log.debug("\u001B[31m"+"StudentController resultStudent: "+resultStudent);
+		log.debug("\u001B[31m"+"StudentController: "+student);
 		return "student/studentHome";
 	}
 	
