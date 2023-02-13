@@ -15,6 +15,16 @@ import goodee.gdj58.online.vo.Question;
 public class ExampleService {
 	@Autowired ExampleMapper exampleMapper;
 	
+	// 답안지 삭제
+	public int removeExample(int questionNo) {
+		return exampleMapper.deleteExample(questionNo);
+	}
+	
+	// 담안지 수정
+	public int modifyExample(Example example) {
+		return exampleMapper.updateExample(example);
+	}
+	
 	// 답안 목록
 	public List<Example> getExampleList(Question question) {
 		return exampleMapper.exampleList(question);	

@@ -34,7 +34,7 @@ public class TestController {
 						, @RequestParam(value="testDate", required=true) String testDate
 						, @RequestParam(value="testTitle", required=true) String testTitle) {
 		if(testDate.equals("") || testTitle.equals("")) { // 공백값이 넘어왔을 경우
-			log.debug("\u001B[31m"+"TeacherController: 시험추가실패");
+			log.debug("\u001B[31m"+"TestController: 시험추가실패");
 			String msg="시험 등록 실패";
 			model.addAttribute("msg", msg);
 			return "test/testList";
@@ -46,13 +46,13 @@ public class TestController {
 		
 		int row = testService.addTest(test);
 		if(row == 0) {
-			log.debug("\u001B[31m"+"TeacherController: 시험등록실패");
+			log.debug("\u001B[31m"+"TestController: 시험등록실패");
 			String msg="시험 등록 실패";
 			model.addAttribute("msg", msg);
 			return "test/testList";
 		} else {
 			int testNo = testService.getTestNo(test);
-			log.debug("\u001B[31m"+"TeacherController: 시험등록완료");
+			log.debug("\u001B[31m"+"TestController: 시험등록완료");
 			return "redirect:/teacher/test/testListOne?testNo="+testNo;
 		}
 	}
@@ -68,24 +68,27 @@ public class TestController {
 		
 		List<Question> getQuestionList = new ArrayList<>();
 		List<Example> getExampleList = new ArrayList<>();
+		ArrayList<Example> getResultExample = new ArrayList<>(); // 모든 exampleList를 담을 List
 		getQuestionList = questionService.getQuestionList(testNo);
 		if(getQuestionList == null) {
 			String msg = "등록한 문제 없음";
-			log.debug("\u001B[31m"+"TeacherController: 등록한 문제 없음");
+			log.debug("\u001B[31m"+"TestController: 등록한 문제 없음");
 			model.addAttribute("msg", msg);
 		} else {
-			log.debug("\u001B[31m"+"TeacherController: 등록한 문제 있음");
+			log.debug("\u001B[31m"+"TestController: 등록한 문제 있음");
 			model.addAttribute("questionList", getQuestionList);
 			for(Question q : getQuestionList) { // 문제번호 구해서 답안지 출력하기
 				int questionNo = q.getQuestionNo();
-				log.debug("\u001B[31m"+"TeacherController: "+questionNo);
 				Question question = new Question();
 				question.setQuestionNo(questionNo);
 				question.setTestNo(testNo);
 				getExampleList = exampleService.getExampleList(question);
-				log.debug("\u001B[31m"+"TeacherController: "+getExampleList);
-				model.addAttribute("exampleList", getExampleList);
+				log.debug("\u001B[31m"+"TestController questionNo: "+questionNo);
+				log.debug("\u001B[31m"+"TestController exampleList: "+getExampleList);
+				getResultExample.addAll(getExampleList); // ArrayList의 addAll() 메소드는 인자로 전달되는 Collection 객체의 모든 아이템을 리스트에 추가
+				log.debug("\u001B[31m"+"TestController getResultExample: "+getResultExample);
 			}
+			model.addAttribute("exampleList", getResultExample);
 		}
 		
 		LocalDate now =LocalDate.now();

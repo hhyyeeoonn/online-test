@@ -13,6 +13,21 @@ import goodee.gdj58.online.vo.Question;
 @Transactional
 public class QuestionService {
 	@Autowired QuestionMapper questionMapper;
+	// 문제 삭제
+	public int removeQuestion(Question question) {
+		return questionMapper.deleteQuestion(question);
+	}
+	
+	// 문제 수정
+	public int modifyQuestion(Question question) {
+		return questionMapper.updateQuestion(question);
+	}
+	
+	// 특정 문제 조회
+	public Question getQuestionOne(Question question) {
+		return questionMapper.selectQuestionOne(question);
+	}
+	
 	// 문제목록
 	public List<Question> getQuestionList(int testNo) {
 		return questionMapper.selectQuestionList(testNo);
