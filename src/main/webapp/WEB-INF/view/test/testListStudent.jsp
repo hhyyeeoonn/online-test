@@ -8,7 +8,7 @@
 </head>
 <body>
 	<div>
-		<c:import url="/WEB-INF/view/student/inc/studentMenu.jsp"> </c:import>
+		<c:import url="/WEB-INF/view/student/inc/studentMenu.jsp"></c:import>
 	</div>
 	
 	<div>시험 목록</div>
@@ -16,6 +16,7 @@
 		<c:forEach var="t" items="${testList}">
 			<div>
 			 	<span>${t.testNo}/</span>
+				<!-- if문으로 분기시키기 -->
 				<span>
 					<a href="${pageContext.request.contextPath}/student/paper/addPaper?testNo=${t.testNo}">
 						${t.testTitle}

@@ -11,34 +11,40 @@
 		//$(this).css('color', 'red');
 		//$(#).append("#뒤에 요소 추가");
 		$(document).ready(function() {
-			$('.pOx').each(function() {
-				let oxLength=$('.pOx:checked').length;
-				$(this).click(function() {
-					console.log($('.pOx:checked').length);
-					if(oxLength == 1) {
-						$('.pOx').prop('checked', false);
-					}
+			$('.questionNo').each(function() {
+				let questionNum=$(this).val();
+				console.log(questionNum);
+				$('.ox'+questionNum).each(function() {
+					$('.ox'+questionNum).click(function() {
+						$('#answer'+questionNum).val($(this).val()); // radio가 체크되면 controller에 넘길 input에 값 넣기
+						console.log($('#answer'+questionNum).val());
+					});
 				});
+			});
+			$("#addBtn").click(function() {
+				$("#addForm").submit();
 			});
 		});
 	</script>
 	
-	<style>
-		
-	</style>
 </head>
 <body>
 	<!-- Menu include -->
 	<div>
 		<c:import url="/WEB-INF/view/student/inc/studentMenu.jsp"> </c:import>
 	</div>
-	<form>
+	<form method="post" action="${pageContext.request.contextPath}/student/paper/addPaper" id="addForm">
+		<input type="hidden" name="studentNo" value="${loginStudent.studentNo}">
 		<div>
-			<c:forEach var="q" items="${questionList}">
+			<c:forEach var="q" items="${questionList}" varStatus="status">
 				<div>
 					<table>
 						<tr>
-							<td colspan = "3">${q.questionIdx} 번</td>
+							<td colspan = "3">
+								${q.questionIdx} 번
+								<input type="hidden" class="questionNo" name="questionNo" value="${q.questionNo}">
+								<input type="hidden" name="answer" id="answer${q.questionNo}" value="0">
+							</td>
 						</tr>
 						<tr>
 							<td colspan = "3">
@@ -50,8 +56,8 @@
 								<tr>
 									<td></td>
 									<td>
-										<input type="radio" class="ox" value="${status.index+1}">
-										<span>${e.exampleIdx}번</span>
+										<input type="radio" class="ox${e.questionNo}" name="ox${e.questionNo}" value="${e.exampleIdx}"> <!-- radio에 name이 없으면 다중선택이 되어버린다 -->
+										<span>${e.exampleIdx} 번)</span>
 									</td>
 									<td>
 										<span>${e.exampleTitle}</span>
@@ -59,11 +65,13 @@
 								</tr>
 							</c:if>
 						</c:forEach>
+						
 					</table>
 				</div>
 				<br>
 			</c:forEach>
 		</div>
+		<button type="button" id="addBtn">제출</button>
 	</form>
 </body>
 </html>

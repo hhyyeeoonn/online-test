@@ -2,7 +2,11 @@ package goodee.gdj58.online.controller;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,10 +17,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import goodee.gdj58.online.service.ExampleService;
 import goodee.gdj58.online.service.IdService;
+import goodee.gdj58.online.service.PaperService;
 import goodee.gdj58.online.service.QuestionService;
 import goodee.gdj58.online.service.TestService;
 import goodee.gdj58.online.vo.Example;
+import goodee.gdj58.online.vo.Paper;
 import goodee.gdj58.online.vo.Question;
+import goodee.gdj58.online.vo.Student;
 import goodee.gdj58.online.vo.Test;
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,14 +33,28 @@ public class TestController {
 	@Autowired TestService testService;
 	@Autowired QuestionService questionService;
 	@Autowired ExampleService exampleService;
+	@Autowired PaperService paperService;
 	@Autowired IdService idService;
 	
+	// 학생 시험 리스트
 	@GetMapping("/student/test/testListStudent")
-	public String getTestListStudent(Model model
+	public String getTestListStudent(HttpSession session, Model model
 							, @RequestParam(value="testDate", defaultValue="") String testDate) {
 		
 		List<Test> testList=testService.getTestList(testDate);
+		int testNo = 0;
+		for(Test t : testList) {
+			testNo = t.getTestNo();
+		}
 		
+		// 학생 답안지 구하기 답안지가 있으면 시험 재응시 불가
+		Student loginStudent=(Student)session.getAttribute("loginStudent");
+		Map<String, Object> paramMap = new HashMap<String, Object>();
+		paramMap.put("testNo", testNo);
+		paramMap.put("studentNo", loginStudent.getStudentNo());
+		Paper paper	= paperService.getPaper(paramMap);
+		
+		model.addAttribute("paper", paper);
 		model.addAttribute("testList", testList);
 		//log.debug("testList: "+testList);
 		return "test/testListStudent";
