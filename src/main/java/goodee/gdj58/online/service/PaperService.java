@@ -1,5 +1,6 @@
 package goodee.gdj58.online.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,7 @@ import goodee.gdj58.online.vo.Paper;
 public class PaperService {
 	@Autowired PaperMapper paperMapper;
 	// 학생 답안지 조회
-	public Paper getPaper(Map<String,Object> paramMap) {
+	public List<Paper> getPaper(Map<String,Object> paramMap) {
 		return paperMapper.selectPaper(paramMap);
 	}
 	

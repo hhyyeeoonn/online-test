@@ -52,10 +52,14 @@ public class TestController {
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("testNo", testNo);
 		paramMap.put("studentNo", loginStudent.getStudentNo());
-		Paper paper	= paperService.getPaper(paramMap);
 		
+		// List<Paper> paper= paperService.getPaper(paramMap); java.lang.UnsupportedOperationException
+		List<Paper> paper=new ArrayList<Paper>();
+		paper=paperService.getPaper(paramMap); 
+		log.debug("\u001B[31m"+"TestController paper: "+paper);
 		model.addAttribute("paper", paper);
 		model.addAttribute("testList", testList);
+		model.addAttribute("studentNo", loginStudent.getStudentNo());
 		//log.debug("testList: "+testList);
 		return "test/testListStudent";
 	}

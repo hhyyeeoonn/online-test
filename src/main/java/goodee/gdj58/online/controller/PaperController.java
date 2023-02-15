@@ -32,6 +32,14 @@ public class PaperController {
 	@Autowired ExampleService exampleService;
 	@Autowired IdService idService;
 	
+	@GetMapping("/student/paper/paperOne")
+	public String getPaperOne(Model model
+						, @RequestParam(value="testNo", required=false) int testNo
+						, @RequestParam(value="studentNo", required=false) int studentNo) {
+		
+		return "paper/paperOne";
+	}
+	
 	@PostMapping("/student/paper/addPaper")
 	public String addPaper(Model model
 					, @RequestParam(value="questionNo", required=false, defaultValue="0") int[] questionNo

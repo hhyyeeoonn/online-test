@@ -18,7 +18,7 @@
 			 	<span>${t.testNo}/</span>
 				<!-- if문으로 분기시키기 -->
 				<span>
-					<a href="${pageContext.request.contextPath}/student/paper/addPaper?testNo=${t.testNo}">
+					<a href="${pageContext.request.contextPath}/student/paper/addPaper?testNo=${t.testNo}&studentNo=${studentNo}">
 						${t.testTitle}
 					</a>
 				</span> 

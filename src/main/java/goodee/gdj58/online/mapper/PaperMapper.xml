@@ -4,7 +4,7 @@
 	<!-- 학생 답안지 불러오기 -->
 	<select	id="selectPaper"
 			parameterType="java.util.Map"
-			resultType="goodee.gdj58.online.vo.Paper">
+			resultType="java.util.List">
 		SELECT 
 			p.paper_no paperNo
 			, p.question_no questionNo
@@ -14,7 +14,7 @@
 			ON p.question_no = q.question_no
 			INNER JOIN test t
 			ON q.test_no = t.test_no
-			WHERE student_no = #{studentNo} AND test_no = #{testNo}
+			WHERE p.student_no = #{studentNo} AND t.test_no = #{testNo} AND p.question_no = #{questionNo}
 	</select>
 	
 	<!-- 학생 답안지 입력 -->
