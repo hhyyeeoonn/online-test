@@ -4,17 +4,18 @@
 	<!-- 학생 답안지 불러오기 -->
 	<select	id="selectPaper"
 			parameterType="java.util.Map"
-			resultType="java.util.List">
+			resultType="java.util.Map">
 		SELECT 
 			p.paper_no paperNo
 			, p.question_no questionNo
 			, p.answer answer
+			, t.test_no testNo
 			FROM paper p
 			INNER JOIN question q
 			ON p.question_no = q.question_no
 			INNER JOIN test t
 			ON q.test_no = t.test_no
-			WHERE p.student_no = #{studentNo} AND t.test_no = #{testNo} AND p.question_no = #{questionNo}
+			WHERE p.student_no = #{studentNo} AND t.test_no = #{testNo}
 	</select>
 	
 	<!-- 학생 답안지 입력 -->

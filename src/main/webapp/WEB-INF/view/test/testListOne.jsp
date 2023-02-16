@@ -97,7 +97,7 @@
 							</div>
 							<br>
 						</div>
-						<c:if test="${qstatus.index == 9}"> <!-- 11번 문제 줄바꿈 -->
+						<c:if test="${qstatus.index == 9}"> <!-- 11번 문제부터 줄바꿈 -->
 							</td>
 							<td>
 						</c:if>

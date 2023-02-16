@@ -33,44 +33,56 @@
 	<div>
 		<c:import url="/WEB-INF/view/student/inc/studentMenu.jsp"> </c:import>
 	</div>
+	
 	<form method="post" action="${pageContext.request.contextPath}/student/paper/addPaper" id="addForm">
 		<input type="hidden" name="studentNo" value="${loginStudent.studentNo}">
-		<div>
-			<c:forEach var="q" items="${questionList}" varStatus="status">
-				<div>
-					<table>
-						<tr>
-							<td colspan = "3">
-								${q.questionIdx} 번
-								<input type="hidden" class="questionNo" name="questionNo" value="${q.questionNo}">
-								<input type="hidden" name="answer" id="answer${q.questionNo}" value="0">
+		<table>
+			<tr>
+				<td>			
+					<c:forEach var="q" items="${questionList}" varStatus="qstatus">
+						<div>
+							<div>
+								<table>
+									<tr>
+										<td colspan = "3">
+											${q.questionIdx} 번
+											<input type="hidden" class="questionNo" name="questionNo" value="${q.questionNo}">
+											<input type="hidden" name="answer" id="answer${q.questionNo}" value="0">
+										</td>
+									</tr>
+									<tr>
+										<td colspan = "3">
+											${q.questionTitle}
+										</td>
+									</tr>
+									<c:forEach var = "e" items = "${exampleList}" varStatus="status">
+										<c:if test="${e.questionNo eq q.questionNo}">
+											<tr>
+												<td></td>
+												<td>
+													<input type="radio" class="ox${e.questionNo}" name="ox${e.questionNo}" value="${e.exampleIdx}"> <!-- radio에 name이 없으면 다중선택이 되어버린다 -->
+													<span>${e.exampleIdx} 번)</span>
+												</td>
+												<td>
+													<span>${e.exampleTitle}</span>
+												</td>
+											</tr>
+										</c:if>
+									</c:forEach>
+								</table>
+							</div>
+							<br>
+						</div>
+													
+						<c:if test="${qstatus.index == 9}"> <!-- 11번 문제부터 열바꿈 -->
 							</td>
-						</tr>
-						<tr>
-							<td colspan = "3">
-								${q.questionTitle}
-							</td>
-						</tr>
-						<c:forEach var = "e" items = "${exampleList}" varStatus="status">
-							<c:if test="${e.questionNo eq q.questionNo}">
-								<tr>
-									<td></td>
-									<td>
-										<input type="radio" class="ox${e.questionNo}" name="ox${e.questionNo}" value="${e.exampleIdx}"> <!-- radio에 name이 없으면 다중선택이 되어버린다 -->
-										<span>${e.exampleIdx} 번)</span>
-									</td>
-									<td>
-										<span>${e.exampleTitle}</span>
-									</td>
-								</tr>
-							</c:if>
-						</c:forEach>
-						
-					</table>
-				</div>
-				<br>
-			</c:forEach>
-		</div>
+							<td>
+						</c:if>
+		
+					</c:forEach>
+				</td>
+			</tr>
+		</table>
 		<button type="button" id="addBtn">제출</button>
 	</form>
 </body>

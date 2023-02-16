@@ -21,7 +21,6 @@ import goodee.gdj58.online.service.PaperService;
 import goodee.gdj58.online.service.QuestionService;
 import goodee.gdj58.online.service.TestService;
 import goodee.gdj58.online.vo.Example;
-import goodee.gdj58.online.vo.Paper;
 import goodee.gdj58.online.vo.Question;
 import goodee.gdj58.online.vo.Student;
 import goodee.gdj58.online.vo.Test;
@@ -42,20 +41,26 @@ public class TestController {
 							, @RequestParam(value="testDate", defaultValue="") String testDate) {
 		
 		List<Test> testList=testService.getTestList(testDate);
+		Student loginStudent=(Student)session.getAttribute("loginStudent");
+		Map<String, Object> paramMap = new HashMap<String, Object>(); //service에 보낼 객체	
+		Map<String, Object> paperM=new HashMap<String, Object>(); 
+		HashMap<String, HashMap<String, Object>> resultMap = new HashMap<String, HashMap<String, Object>>();
+		ArrayList<HashMap<String, Object>> paper = new ArrayList<HashMap<String, Object>>();
 		int testNo = 0;
 		for(Test t : testList) {
 			testNo = t.getTestNo();
+			// 학생 답안지 구하기 답안지가 있으면 시험 재응시 불가
+			paramMap.put("testNo", testNo);
+			paramMap.put("studentNo", loginStudent.getStudentNo());
+			
+			paperM=paperService.getPaper(paramMap);
+			
+			for(HashMap<String, Object> m : paperM) {
+				
+			}
 		}
+		// List<Paper> paper= paperService.getPaper(paramMap); : java.lang.UnsupportedOperationException
 		
-		// 학생 답안지 구하기 답안지가 있으면 시험 재응시 불가
-		Student loginStudent=(Student)session.getAttribute("loginStudent");
-		Map<String, Object> paramMap = new HashMap<String, Object>();
-		paramMap.put("testNo", testNo);
-		paramMap.put("studentNo", loginStudent.getStudentNo());
-		
-		// List<Paper> paper= paperService.getPaper(paramMap); java.lang.UnsupportedOperationException
-		List<Paper> paper=new ArrayList<Paper>();
-		paper=paperService.getPaper(paramMap); 
 		log.debug("\u001B[31m"+"TestController paper: "+paper);
 		model.addAttribute("paper", paper);
 		model.addAttribute("testList", testList);
