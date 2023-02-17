@@ -12,6 +12,10 @@
 		<c:import url="/WEB-INF/view/test/inc/testMenu.jsp"> </c:import>
 	</div>
 
+	<!-- 시행일자 달력넣기 -->
+	<!-- 시험기간상태 추가하기 -->
+	<!-- 시험목록에 출제상태 확인 추가하기 -->
+
 	<div>
 		<form action="${pageContext.request.contextPath}/teacher/test/addTest" method="post">
 			<div>새 시험 등록하기</div>

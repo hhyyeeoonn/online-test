@@ -13,8 +13,13 @@ import goodee.gdj58.online.vo.Paper;
 @Transactional
 public class PaperService {
 	@Autowired PaperMapper paperMapper;
+	// 학생 답안지 존재여부 확인 : 숫자 20이 나오면 시험에 응시했다는 것
+	public Map<String, Object> getCntPaper(Map<String, Object> testStudent) {
+		return paperMapper.selectCntPaper(testStudent);
+	}
+	
 	// 학생 답안지 조회
-	public Map<String, Object> getPaper(Map<String,Object> paramMap) {
+	public Paper getPaper(Map<String,Object> paramMap) {
 		return paperMapper.selectPaper(paramMap);
 	}
 	

@@ -47,10 +47,21 @@
 		<div>${msg}</div>	
 	</c:if>
 	
-	<div>
-		<a href="${pageContext.request.contextPath}/teacher/question/addQuestion?testNo=${testNo}">문제등록</a>
-	</div>
+		
+	<!-- 시험등록상태 변경 : 작성완료로 선택하면 문제 수정삭제는 불가능하게되며 시험삭제만 가능하다 또한 출제 문제수가 20일 때만 작성완료 상태로 변경할 수 있다 -->
 	
+	<div>* 한 시험당 출제 문제수는 20개입니다.</div>
+	<c:choose>
+		<c:when test="${countQuestion < 20}">
+			<div>출제 문제수 : ${countQuestion}/20 &nbsp;
+				<a href="${pageContext.request.contextPath}/teacher/question/addQuestion?testNo=${testNo}">문제등록</a>
+			</div>
+		</c:when>
+		<c:when test="${countQuestion == 20}">
+			<div>출제 문제수 : ${countQuestion}/20</div>
+		</c:when>
+	</c:choose>
+	<br>
 	<div>
 		<table border="1">
 			<tr>
@@ -97,7 +108,7 @@
 							</div>
 							<br>
 						</div>
-						<c:if test="${qstatus.index == 9}"> <!-- 11번 문제부터 줄바꿈 -->
+						<c:if test="${qstatus.index == 9}"> <!-- 11번 문제부터 열바꿈 -->
 							</td>
 							<td>
 						</c:if>

@@ -42,27 +42,28 @@ public class TestController {
 		
 		List<Test> testList=testService.getTestList(testDate);
 		Student loginStudent=(Student)session.getAttribute("loginStudent");
-		Map<String, Object> paramMap = new HashMap<String, Object>(); //service에 보낼 객체	
-		Map<String, Object> paperM=new HashMap<String, Object>(); 
-		HashMap<String, HashMap<String, Object>> resultMap = new HashMap<String, HashMap<String, Object>>();
-		ArrayList<HashMap<String, Object>> paper = new ArrayList<HashMap<String, Object>>();
+		Map<String, Object> testStudent = new HashMap<String, Object>(); //service에 보낼 객체	
+		Map<String, Object> paperCnt = new HashMap<String, Object>(); 
+		List<Map<String, Object>> resultPaper = new ArrayList<Map<String, Object>>();
 		int testNo = 0;
 		for(Test t : testList) {
 			testNo = t.getTestNo();
 			// 학생 답안지 구하기 답안지가 있으면 시험 재응시 불가
-			paramMap.put("testNo", testNo);
-			paramMap.put("studentNo", loginStudent.getStudentNo());
-			
-			paperM=paperService.getPaper(paramMap);
-			
-			for(HashMap<String, Object> m : paperM) {
-				
-			}
+			testStudent.put("testNo", testNo);
+			testStudent.put("studentNo", loginStudent.getStudentNo());
+			log.debug("\u001B[31m"+testNo+loginStudent.getStudentNo());
+			paperCnt = paperService.getCntPaper(testStudent);
+			resultPaper.add(paperCnt);
+			log.debug("\u001B[31m"+"TestController resultPaper: "+resultPaper);
 		}
 		// List<Paper> paper= paperService.getPaper(paramMap); : java.lang.UnsupportedOperationException
 		
-		log.debug("\u001B[31m"+"TestController paper: "+paper);
-		model.addAttribute("paper", paper);
+		// 오늘 날짜
+		LocalDate now =LocalDate.now();
+		model.addAttribute("now", now);
+		log.debug("\u001B[31m"+"TestController now: "+now);
+		log.debug("\u001B[31m"+"TestController paper: "+resultPaper);
+		model.addAttribute("paper", resultPaper);
 		model.addAttribute("testList", testList);
 		model.addAttribute("studentNo", loginStudent.getStudentNo());
 		//log.debug("testList: "+testList);
@@ -133,6 +134,9 @@ public class TestController {
 			model.addAttribute("exampleList", getResultExample);
 		}
 		
+		// 문제개수
+		int countQuestion = questionService.questionCnt(testNo);
+		model.addAttribute("countQuestion", countQuestion);
 		LocalDate now =LocalDate.now();
 		model.addAttribute("now", now);
 		model.addAttribute("testNo", testNo);
