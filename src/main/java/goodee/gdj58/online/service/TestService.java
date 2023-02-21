@@ -14,6 +14,11 @@ import goodee.gdj58.online.vo.Test;
 @Transactional
 public class TestService {
 	@Autowired private TestMapper testMapper;
+	// 시험출제 상태 변경
+	public int modifyTestState(int testNo) {
+		return testMapper.updateTestState(testNo);
+	}
+	
 	// 시험회차 조회
 	public int getTestNo(Test test) {
 		return testMapper.selectTestNo(test);

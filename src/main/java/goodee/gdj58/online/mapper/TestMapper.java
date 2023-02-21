@@ -9,6 +9,7 @@ import goodee.gdj58.online.vo.Test;
 
 @Mapper
 public interface TestMapper {
+	int updateTestState(int testNo); // 시험 출제상태 변경
 	int selectTestNo(Test test); // 시험회차 조회
 	int insertTest(Test test); // 시험회차 등록
 	Map<String, Object> selectTestListOne(int testNo); // 시험일 하나 선택

@@ -23,13 +23,23 @@
 				}
 			});	
 			
+			// 문제 출력할 때 줄바꾸는 코드
 			$('.qIndex').each(function() {
 				if($(this).val() == 10) {
 					console.log($(this).val()+"줄바꿈");
 					$(this).after('</td><td>');
 				}
-				
 			});
+			
+			// 출제 상태 변경
+			if($('#stateMsg').val() != null) {
+				if($(this).val() == Y) {
+					alert('촐제가 완료되었습니다');
+				} else {
+					alrert('출제상태 변경에 실패하였습니다 다시 시도하세요');
+				}
+			}
+			
 		});
 	</script>
 	
@@ -46,9 +56,9 @@
 	<c:if test="${msg != null}">
 		<div>${msg}</div>	
 	</c:if>
-	
+	<input type="hidden" id="stateMsg" value="${stateMsg}">
 		
-	<!-- 시험등록상태 변경 : 작성완료로 선택하면 문제 수정삭제는 불가능하게되며 시험삭제만 가능하다 또한 출제 문제수가 20일 때만 작성완료 상태로 변경할 수 있다 -->
+	<!-- 시험등록상태 변경 : 작성완료로 선택하면 문제 수정삭제는 불가능하게되며 시험삭제만 가능하다 또한 출제 문제수가 20일 때만 출제완료 상태로 변경할 수 있다 -->
 	
 	<div>* 한 시험당 출제 문제수는 20개입니다.</div>
 	<c:choose>
@@ -59,6 +69,13 @@
 		</c:when>
 		<c:when test="${countQuestion == 20}">
 			<div>출제 문제수 : ${countQuestion}/20</div>
+			<div>
+				<a href="${pageContext.request.contextPath}/teacher/test/modifyTestState?testNo=${testNo}">출제완료</a>
+			</div>
+		</c:when>
+		<c:when test="${countQuestion == 20 && stateMsg eq Y}">
+			<div>출제 문제수 : ${countQuestion}/20</div>
+			<div>* 출제가 완료되어 문제 수정이 불가합니다</div>
 		</c:when>
 	</c:choose>
 	<br>

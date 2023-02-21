@@ -35,6 +35,21 @@ public class TestController {
 	@Autowired PaperService paperService;
 	@Autowired IdService idService;
 	
+	// 시험 출제상태 변경
+	@GetMapping("/teacher/test/modifyTestState")
+	public String modifyTestState(@RequestParam(value="testNo", defaultValue="0") int testNo) {
+		String stateMsg = "";
+		if(testNo == 0) {
+			stateMsg = "N";
+		} else {
+			testService.modifyTestState(testNo);
+			stateMsg= "Y";
+		}
+		
+		return "redirect:/teacher/test/testListOne?testNo="+testNo+"&stateMsg="+stateMsg;
+	}
+	
+	
 	// 학생 시험 리스트
 	@GetMapping("/student/test/testListStudent")
 	public String getTestListStudent(HttpSession session, Model model
@@ -102,7 +117,16 @@ public class TestController {
 	// 시험 한 회차 조회
 	@GetMapping("/teacher/test/testListOne")
 	public String getTestListOne(Model model 
+								, @RequestParam(value="stateMsg", required=false) String stateMsg
 								, @RequestParam(value="testNo", defaultValue="0") int testNo) {
+		// 상태변경 메시지 유무 확인
+		if(stateMsg == null || stateMsg == "") {
+			
+		} else {
+			model.addAttribute("stateMsg", stateMsg);
+		}
+		
+		// 시험번호 확인
 		if(testNo == 0) {
 			log.debug("\u001B[31m"+"TeacherController: testNo 없음");
 			return "redirect:/teacher/getTeacherList";
